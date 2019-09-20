@@ -1,0 +1,2 @@
+SHOW STATUS
+flush hosts;
