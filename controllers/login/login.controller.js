@@ -44,18 +44,15 @@ function login_mq(req,res){
 	var sucursal = params.sucursal;
     var fechatrabajo = params.fechatrabajo;
 
-    con.query('SELECT usuario, nombre, email '+
-                'FROM usuario '+
-                'WHERE usuario=? '+
-                'AND contrasena=?',[surname,password],(err,user)=>{
-
+    con.query('call mksp_login (?, ?, ?, ?);',[surname,password,empresa,sucursal],(err,user)=>{
             if (err){                
 				res.status(500).send({message:'Error al comprobar el usuario'})
-			} else  {                
+			} else  {   
+                //console.log(user)             
 				if (!user){                    
                     res.status(400).send({message:'El usuario o el password son incorrectos'});
                 } else {
-                    console.log(user);
+                    //console.log(user[0][0].mensaje);
                     res.status(200).send(user);		
                     con.end();					
 					console.log('shalom');

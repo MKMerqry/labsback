@@ -17,7 +17,7 @@ function wfestado_edit(req,res){
                 if (update.affectedRows===0){
                     res.status(500).send({message:'Ocurrio un error en la actualizacion'});
                 } else {
-                    console.log('aqui')
+                    //console.log('aqui')
                     res.status(200).send({wfestado:'El registro se actualizo correctamente'});
                     con.end();
                 }

@@ -14,7 +14,7 @@ function cancelacion_uno (req,res){
                 if (!cancelacion) {
                     res.status(404).send({message:'la consulta esta vacia'});                
                 } else {
-                    console.log(cancelacion);
+                    //console.log(cancelacion);
                     res.status(200).send({cancelacion})
                     con.end();
                 }
