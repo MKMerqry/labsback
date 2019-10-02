@@ -32,14 +32,17 @@ function paciente_new(req,res){
     if (params.contacto && params.nombre){
         con.query('INSERT INTO contacto '+
         '(Contacto, Nombre, ApellidoPaterno, ApellidoMaterno, Direccion, Colonia, Poblacion, Estado, CodigoPostal, Pais, '+
-        'RFC, UsoComprobante,Utilizado, Email, RegimenFiscal, EsCliente,EsAgente, ClienteCredito,ClienteEstatus, '+
-        'EsProveedor,EsPersonal,NumeroExterior,ClienteLimiteCredito,ClienteVentaConsignacion,UltimoCambio, '+
-        'CuentaRelacionada,EsSocioOAccionista,AgenteTipo,ClienteRetencion5PM,ClienteCreditoRelacionado, '+
-        'ClienteDiaCorte,ClienteLimiteCredFecha,ContactoPorEmpresa,Edad,Sexo,AgenteEstatus,ClienteTipo) '+ //35
-        'VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)',//35
-        [params.contacto,params.nombre,params.paterno,params.materno,domicilio,guion,guion,guion,cp,pais,
-        'XAXX010101000','G03',cero,params.correo,'Persona Fisica',uno,cero,uno,params.estatus,
-        cero,cero,numero,cero,cero,hoy,cero,cero,'',cero,cero,uno,cero,cero,params.edad,params.sexo,params.estatus,'Paciente'],(err,insert,fields) => { //35
+        'RFC, UsoComprobante,Utilizado, Email, RegimenFiscal, EsCliente,EsAgente, ClienteCredito,ClienteEstatus, EsProveedor, '+
+        'EsPersonal,NumeroExterior,ClienteLimiteCredito,ClienteVentaConsignacion,UltimoCambio, CuentaRelacionada,EsSocioOAccionista,AgenteTipo,ClienteRetencion5PM,ClienteCreditoRelacionado, '+
+        'ClienteDiaCorte,ClienteLimiteCredFecha,ContactoPorEmpresa,Edad,Sexo,AgenteEstatus,ClienteTipo,Telefono,FechaNacimientoE) '+ //35
+        'VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, '+
+        '?, ?, ?, ?, ?, ?, ?, ?, ?, ?, '+
+        '?, ?, ?, ?, ?, ?, ?, ?, ?, ?, '+
+        '?, ?, ?, ?, ?, ?, ?, ?, ?)',//39
+        [params.contacto, params.nombre, params.paterno, params.materno, domicilio, guion, guion, guion, cp, pais,
+        'XAXX010101000','G03',cero, params.correo,'Persona Fisica',uno,cero,uno,params.estatus,cero,
+        cero,numero,cero,cero,hoy,cero,cero,'',cero,cero,
+        uno,cero,cero,params.edad,params.sexo,params.estatus,'Paciente',params.telefono,params.nacimiento],(err,insert,fields) => { //35
             if (err){
                 res.status(500).send({message:err.sqlMessage});
             } else {
@@ -66,7 +69,7 @@ function paciente_edit(req,res){
 
     if (params.contacto && params.nombre){
         con.query('UPDATE contacto '+  
-        'SET Nombre=?, ApellidoPaterno=?, ApellidoMaterno=?, Email=? ,Edad=?,Sexo=? WHERE Contacto=?',[params.nombre, params.paterno, params.materno, params.correo, params.edad, params.sexo, key],(err,update,fields) => {
+        'SET Nombre=?, ApellidoPaterno=?, ApellidoMaterno=?, Email=? ,Edad=?, Sexo=?, FechaNacimientoE=?,Telefono=? WHERE Contacto=?',[params.nombre, params.paterno, params.materno, params.correo, params.edad, params.sexo,params.nacimiento,params.telefono, key],(err,update,fields) => {
             if (err){
                 res.status(500).send({message:err.sqlMessage});
             } else {

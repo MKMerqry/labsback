@@ -54,8 +54,12 @@ function solicitud_new(req,res){
      console.log(params);
     if (params.paciente && params.doctor){
         con.query('INSERT INTO venta '+
-        '(Concepto,Folio,Descuento,DescuentoPorc,DescuentoImporte,Importe,Impuestos, Observaciones, Referencia, Empresa, Contacto, Mov, Sucursal, FechaEmision, Usuario, Moneda, TipoCambio, Estatus, Almacen, ListaPrecios, Vendedor, WFEstado) '+//,   Almacen, Vendedor, ListaPrecios, CentroCostos, WFEstado, ZonaImpuesto, Embarcar, Uso, Credito,Importe,Impuestos) '+
-        'VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',[params.concepto,params.folio,'Descuento',params.descuentopct,params.descuentoimp,params.importe,params.impuesto,params.observaciones,params.referencia,params.empresa,params.paciente,params.mov, params.sucursal, hoy, params.usuario, params.moneda, params.tipocambio, params.estatus,params.almacen,params.listaprecio,params.doctor,'Comprobante'],(err,insert,fields) => {
+        '(Concepto,Folio,Descuento,DescuentoPorc,DescuentoImporte,Importe,Impuestos, Observaciones, Referencia, Empresa, Contacto, Mov, Sucursal, FechaEmision, Usuario, '+
+        'Moneda, TipoCambio, Estatus, Almacen, ListaPrecios, Vendedor, WFEstado,corporativo,envio,tomamuestra,tiposervicio,encuesta,paciente,tiponota) '+
+        'VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,?,?,?,?,?)',[params.encuesta,params.folio,'Descuento',params.descuentopct,
+        params.descuentoimp,params.importe,params.impuesto,params.observaciones,params.referencia,params.empresa,params.paciente,params.mov, params.sucursal, 
+        hoy, params.usuario, params.moneda, params.tipocambio, params.estatus,params.almacen,params.listaprecio,params.doctor,'Comprobante',
+    params.corporativo,params.tipoenvio,params.tomamuestra,params.tiposervicio,params.encuesta,params.pacienteEntrega,params.tipoNom],(err,insert,fields) => {
             // contacto, almacen, vendedor, listaprecios, centrocostos, wfestado, zonaimpuesto, embarcar, uso, credito,importe,impuestos            
         //, , ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?) '
             if (err){
@@ -137,7 +141,7 @@ function solicitud_new(req,res){
                     }    
                     con.query('INSERT INTO ventaimporte '+
                     '(ID, CuentaBanco,Cajero,Cambio) '+
-                     'VALUES (?,?,?,?)',[ventaID,'CJ-R01',params.doctor,0],(err,insertvi,fields) => {
+                     'VALUES (?,?,?,?)',[ventaID,params.ctabanco,params.doctor,0],(err,insertvi,fields) => {
                         if (err){
                             res.status(500).send({message:err.sqlMessage});
                         } else {

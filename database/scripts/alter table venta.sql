@@ -1,0 +1,11 @@
+
+
+ALTER TABLE venta ADD COLUMN tiponota VARCHAR(25);
+ALTER TABLE venta ADD COLUMN paciente VARCHAR(25);
+ALTER TABLE venta ADD COLUMN corporativo VARCHAR(25);
+ALTER TABLE venta ADD COLUMN encuesta VARCHAR(100);
+ALTER TABLE venta ADD COLUMN tiposervicio VARCHAR(100);
+ALTER TABLE venta ADD COLUMN tomamuestra VARCHAR(100);
+ALTER TABLE venta ADD COLUMN envio VARCHAR(100);
+
+-- select * from venta

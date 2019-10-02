@@ -2,8 +2,10 @@
 const dbconection = require('../../database/conection');
 
 function art_list (req,res){
-    const con =dbconection(), linea1='Estudio', linea2='Paquete', estatus='ACTIVO',lista='General'
-    con.query('CALL mksp_articulos (?,?)',['1',lista],(err,articulo)=>{
+    const con =dbconection(), lista='General'
+    var key=req.params.id;
+    console.log('articulos',key)
+    con.query('CALL mksp_articulos (?,?)',[key,lista],(err,articulo)=>{
         if (err) {
             res.status(500).send({message:'Ocurrio un error en su consulta'});
         } else {
@@ -46,19 +48,24 @@ function art_etiqueta_lst (req,res){
 
 
 function art_list2 (req,res){
+    var key=req.params.id;
+    //console.log(key);
     const con =dbconection(), linea1='Estudio', linea2='Paquete', estatus='ACTIVO',lista='General'
-    con.query('SELECT a.*, '+
-    'b.Precio - b.Precio*(a.Impuesto1/100.0) as PrecioBruto,b.Precio  as PrecioNeto, 1 as MKCantidad, '+ 
-    'b.Precio as pxcNeto '+
-    'FROM articulo a '+
-    'LEFT JOIN listapreciosd b ON a.Articulo=b.Articulo '+
-    'WHERE a.Linea=? '+
-    'OR a.Linea=? '+
-    'AND a.Estatus=? '+
-    'AND b.Lista=? LIMIT 10',[linea1,linea2,estatus,lista],(err,articulo)=>{
+    con.query('SELECT b.Articulo, c.Descripcion ,Sum(b.Cantidad ) AS Cantidad '+
+    'FROM venta a '+
+    'LEFT JOIN ventad b ON  a.Id=b.Id '+
+    'left join articulo c on b.Articulo=c.Articulo '+
+    'WHERE 1=1 '+
+    'AND a.Sucursal=? '+
+    'AND c.Linea in ( ?, ? ) '+
+    'AND c.Estatus = ? '+
+    'AND a.Estatus = ? '+
+    'group by b.Articulo,c.Descripcion '+
+    'Order by 3 Desc '+
+    'Limit 10; ',[key,'Estudio','Paquete','ACTIVO','Aplicado'],(err,articulo)=>{
         if (err) {
             console.log(err);
-            res.status(500).send({message:'Oc111rrio un error en su consulta'});
+            res.status(500).send({message:'Ocurrio un error en su consulta'});
         } else {
             if (!articulo) {
                 res.status(404).send({message:'la consulta esta vacia'});                
@@ -70,22 +77,22 @@ function art_list2 (req,res){
     });
 }
 
-
-
 function art_list_topten (req,res){
-    //console.log('aqui perrpo');
+    var key=req.params.id;
+    //console.log(key);
     const con =dbconection(), linea1='Estudio', linea2='Paquete', estatusa='ACTIVO',estatusa='General',estatusv='Aplicado'
     con.query('SELECT b.Articulo, c.Descripcion ,Sum(b.Cantidad ) AS Cantidad '+
     'FROM venta a '+
-    'LEFT JOIN ventad b ON  a.Id=b.Id  '+
-    'left join articulo c on b.Articulo=c.Articulo  '+
-    'WHERE c.Linea = ? '+
-    'OR c.Linea = ? '+
+    'LEFT JOIN ventad b ON  a.Id=b.Id '+
+    'left join articulo c on b.Articulo=c.Articulo '+
+    'WHERE 1=1 '+
+    'AND a.Sucursal=? '+
+    'AND c.Linea in ( ?, ? ) '+
     'AND c.Estatus = ? '+
-    'and a.Estatus = ? '+
-    'group by b.Articulo,c.Descripcion  '+
+    'AND a.Estatus = ? '+
+    'group by b.Articulo,c.Descripcion '+
     'Order by 3 Desc '+
-    'Limit 10',[linea1,linea2,estatusa,estatusv],(err,articulo)=>{
+    'Limit 10; ',[key,'Estudio','Paquete','ACTIVO','Aplicado'],(err,articulo)=>{
         if (err) {
             console.log(err);
             res.status(500).send({message:'Ocurrio un error en su consulta'});

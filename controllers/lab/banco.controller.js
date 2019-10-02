@@ -2,7 +2,7 @@
 const dbconection = require('../../database/conection');
 
 function banco_list (req,res){
-    const con =dbconection(), empresa='1', sucursal='1', movimiento='Nota',estatusP='Pendiente',estatusC='Concluido', movanticipo='INGRESO'
+    const con =dbconection(),  movimiento='Nota',estatusP='Pendiente',estatusC='Concluido', movanticipo='INGRESO'
     var key=req.params.id;
     if (key) {    
         con.query('SELECT a.ID,a.Empresa,a.Mov,a.Sucursal,a.Folio,a.FechaEmision,a.Usuario,a.Moneda, '+
@@ -25,11 +25,10 @@ function banco_list (req,res){
                 'LEFT JOIN usuario b on a.Usuario=b.Usuario '+
                 'LEFT JOIN contacto c on a.Contacto=c.Contacto '+
                 'WHERE 1=1 '+
-                'AND a.Empresa=? '+
                 'AND a.Sucursal=? '+
                 'AND a.Mov=? '+
                 'AND a.Estatus in ( ?,? ) '+
-                'ORDER BY a.FechaEmision DESC, a.ID DESC;',[movanticipo,empresa,key,movimiento,estatusP,estatusC],(err,banco)=>{
+                'ORDER BY a.FechaEmision DESC, a.ID DESC;',[movanticipo,key,movimiento,estatusP,estatusC],(err,banco)=>{
             if (err) {
                 res.status(500).send({message:'Ocurrio un error en su consulta'});
             } else {
@@ -48,7 +47,7 @@ function banco_list (req,res){
 
 
 function banco_list2 (req,res){
-    const con =dbconection(), empresa='1', sucursal='1', movimiento='Nota',estatusP='Pendiente',estatusC='Concluido'
+    const con =dbconection(),  movimiento='Nota',estatusP='Pendiente',estatusC='Concluido'
     var key=req.params.id;
     if (key) {    
         con.query('SELECT a.ID,a.Empresa,a.Mov,a.Sucursal,a.Folio,a.FechaEmision,a.Usuario,a.Moneda, '+
@@ -64,11 +63,10 @@ function banco_list2 (req,res){
                 'LEFT JOIN usuario b on a.Usuario=b.Usuario '+
                 'LEFT JOIN contacto c on a.Contacto=c.Contacto '+
                 'WHERE 1=1 '+
-                'AND a.Empresa=? '+
                 'AND a.Sucursal=? '+
                 'AND a.Mov=? '+
                 'AND a.Estatus in ( ?,? ) '+
-                'ORDER BY a.FechaEmision DESC, a.ID DESC LIMIT 10',[empresa,key,movimiento,estatusP,estatusC],(err,banco)=>{
+                'ORDER BY a.FechaEmision DESC, a.ID DESC LIMIT 10',[key,movimiento,estatusP,estatusC],(err,banco)=>{
             if (err) {
                 res.status(500).send({message:'Ocurrio un error en su consulta'});
             } else {

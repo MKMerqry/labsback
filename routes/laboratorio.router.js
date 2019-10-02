@@ -44,8 +44,13 @@ router.get( '/link/:id', linkCtrl.link_list);
 router.get( '/linkd/:id', linkCtrl.link_listd);
 
 
+//CORREO
+var correoCtrl = require('../controllers/lab/correo.controller');
+router.post( '/correo/new', correoCtrl.correo_new);
+
 //CANCELACIO Y REUTILIZACION DE FOLIO
 var cancelacionCtrl = require('../controllers/lab/cancelacion.controller');
+router.get( '/cancelacionesdet/:id', cancelacionCtrl.cancelacion_listdet);
 router.get( '/cancelacion/:id', cancelacionCtrl.cancelacion_uno);
 router.get( '/cancelaciones/:id', cancelacionCtrl.cancelacion_list);
 
@@ -80,16 +85,16 @@ router.put( '/formapagcob/:id', formapagcobCtrl.formapagcob_edit);
 
 //SOLICITUDES
 var solicitudCtrl = require('../controllers/lab/solicitud.controller');
-router.get( '/solicitud',     solicitudCtrl.solicitud_list);
+router.get( '/solicitud/:id',     solicitudCtrl.solicitud_list);
 router.post('/solicitud/new', solicitudCtrl.solicitud_new);
-router.get( '/solicitud/:id', solicitudCtrl.solicitud_uno);
+router.get( '/solicituduno/:id', solicitudCtrl.solicitud_uno);
 router.put( '/solicitud/:id', solicitudCtrl.solicitud_edit);
 router.get( '/solicitudD/:id',solicitudCtrl.solicitud_unodetalle);
 
 //ARTICULO
 var artCtrl = require('../controllers/lab/art.controller');
-router.get( '/art',     artCtrl.art_list);
-router.get( '/art2',     artCtrl.art_list2);
+router.get( '/art/:id',     artCtrl.art_list);
+router.get( '/art2/:id',     artCtrl.art_list2);
 router.post('/art/new', artCtrl.art_new);
 router.get( '/art/:id', artCtrl.art_uno);
 router.put( '/art/:id', artCtrl.art_edit);
